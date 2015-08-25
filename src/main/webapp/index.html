@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html lang="en" ng-app="cacheApp">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Examples of caching in AngularJS">
+    
+    <title>Angular Cache</title>
+    
+    <link rel='stylesheet' href='/angular-cache/webjars/purecss/0.6.0/build/pure-min.css'>
+    <link rel='stylesheet' href='/angular-cache/webjars/purecss/0.6.0/build/grids-responsive-min.css'>
+    <link rel='stylesheet' href='/angular-cache/webjars/font-awesome/4.3.0-3/css/font-awesome.min.css'>
+    
+    <script src="/angular-cache/webjars/angularjs/1.4.3/angular.min.js"></script>
+    <script src="/angular-cache/webjars/angularjs/1.4.3/angular-resource.min.js"></script>
+    <script src="/angular-cache/webjars/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/caches.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/directives.js"></script>
+    <script src="js/interceptors.js"></script>
+    <script src="js/services.js"></script>
+</head>
+<body>
+    <div class="pure-menu pure-menu-horizontal">
+        <span class="pure-menu-heading">Cache Types</span>
+
+        <ul class="pure-menu-list">
+            <li class="pure-menu-item"><a class="pure-menu-link" ui-sref="nocache" >None</a></li>
+            <li class="pure-menu-item"><a class="pure-menu-link" ui-sref="cache">Default</a></li>
+            <li class="pure-menu-item"><a class="pure-menu-link" ui-sref="lru">LRU</a></li>
+            <li class="pure-menu-item"><a class="pure-menu-link" ui-sref="ttl">TTL</a></li>
+            <li class="pure-menu-item"><a class="pure-menu-link" ui-sref="localstorage">Local Storage</a></li>
+            <li class="pure-menu-item"><a class="pure-menu-link" ui-sref="sessionstorage">Session Storage</a></li>
+        </ul>
+    </div>
+    <div ui-view></div>
+
+    <div ng-view class="view-frame"></div>
+    
+    <clear-local-storage></clear-local-storage>
+</body>
+</html>
