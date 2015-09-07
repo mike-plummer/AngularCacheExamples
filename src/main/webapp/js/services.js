@@ -42,7 +42,7 @@ angular.module('cacheServices', ['ngResource'])
       return buildDataResource($resource, LocalStorageCacheFactory.create());
     }
   ]);
-  
+
 var buildDataResource = function($resource, cache) {
   return $resource('./data/:version', {version: '1'}, {
     query: {method:'GET', isArray: true, cache: cache}

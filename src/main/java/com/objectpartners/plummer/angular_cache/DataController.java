@@ -15,11 +15,7 @@ public class DataController {
     public static final String RESOURCE_ROOT_URL = "/data";
 
     @RequestMapping(value = "/{version}", method = RequestMethod.GET)
-    public List<Integer> list() {
-        List<Integer> data = new ArrayList<>();
-        for (int i = 0; i < RANDOM.nextInt(10) + 1; i++) {
-            data.add(RANDOM.nextInt(100));
-        }
-        return data;
+    public Integer[] list() {
+        return new Integer[]{RANDOM.nextInt(100)};
     }
 }

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<!--[if IE 7]>
+<html lang="en" data-ng-app="main" id="ng-app" class="no-js ie"></html>
+<![endif]-->
+<!--[if IE 8]>
+<html lang="en" data-ng-app="main" id="ng-app" class="no-js ie"></html>
+<![endif]-->
+<!--[if IE 9]>
+<html lang="en" data-ng-app="main" id="ng-app" class="no-js ie9"></html>
+<![endif]-->
+<!--if [(gt IE 9)|!(IE)] <!-->
+<html ng-app="main" class="no-js">
+  <!-- <![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <title>Caching in Angular.js</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="description" content="Reveal JS Template">
+    <link href="./assets/css/style.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="opi-logo"></div>
+      <div class="slides">
+        <section data-state="index-slide">
+          <h1>Caching in Angular.js</h1>
+          <h3>Easy data-flow control in services</h3>
+          <p>
+            <small><a href="http://twitter.com/plummer_mike">Mike Plummer</a>  | Senior Consultant | <a href="http://www.objectpartners.com/">Object Partners</a></small>
+            <img src="./assets/img/2015-OPI-Logo-Long.png" style="background:none; border:none; box-shadow:none;"/>
+          </p>
+        </section>
+        <section data-state="github-slide" class="github-section">
+          <h1><i class="fa fa-icon fa-github"></i></h1>
+          <p>
+            Slides and source available on <a href="https://github.com/mike-plummer/AngularCacheExamples" target="_blank">GitHub</a>
+          </p>
+        </section>
+        <section>
+          <h2>Awesomeness</h2>
+          <p>
+            Angular.js supports super-easy caching of $http invocations (including things that use $http like $resource)...
+          </p>
+          <p class="fragment">...but by default caching is not enabled.</p>
+        </section>
+        <section>
+            <h2>Cache Basics</h2>
+            <ol>
+              <li class="fragment">Conforms to the following contract: info, put, get, remove, removeAll, destroy</li>
+              <li class="fragment">Angular-provided caches act as stateful in-memory maps</li>
+              <li class="fragment">Managed by $cacheFactory</li>
+            </ol>
+        </section>
+        <section>
+          <h2>$cacheFactory</h2>
+          <p>Manages the lifecycle of caches
+          <ol>
+            <li class="fragment">Part of core Angular - no additional imports needed</li>
+            <li class="fragment">Handles construction of and access to cache instances</li>
+            <li class="fragment">Easy to use, but limited</li>
+          </ol>
+        </section>
+        <section>
+          <h2>Use of $cacheFactory</h2>
+          <p>Adding a default Angular-provided cache is super simple:
+          <p>
+              Without caching...
+            <pre><code data-trim contenteditable>
+$resource('./data', {}, {
+  query: {method:'GET'}
+});
+            </code></pre>
+          </p>
+          <p>
+              ...and with.
+            <pre><code data-trim contenteditable>
+$resource('./data', {}, {
+  query: {method:'GET', cache: true}
+});
+            </code></pre>
+          </p>
+        </section>
+        <section>
+          <h2>Behind the scenes</h2>
+          <p>Anything specifying {cache: true} ends up using a shared cache instance named '$http'.</p>
+          <p>Service responses are held as key/value pairs:</p>
+          <pre><code data-trim contenteditable>
+{
+    'myapp/data/alpha': '{content}',
+    'myapp/data/beta': '{content}',
+    'myapp/data/beta?param=true': '{content}'
+}
+          </code></pre>
+          <p class="fragment">Grows quickly if you hit many different URI's and is prone to collisions.</p>
+        </section>
+        <section>
+          <h2>Simple Example</h2>
+          <p>Let's see the difference from uncached and default-cached services.</p>
+        </section>
+        <section>
+          <h2>More advanced caching</h2>
+          <p>$cacheFactory supports building LRU caches.</p>
+          <pre><code data-trim contenteditable>
+$resource('./data', {}, {
+  query: {method:'GET', cache: $cacheFactory('MyLRUCache', { capacity: 2 })}
+});
+          </code></pre>
+        </section>
+        <section>
+          <h2>Custom Caches</h2>
+          <p>We can build our own caches to expand on Angular's abilities</p>
+          <ol>
+            <li>Time to Live (TTL)</li>
+            <li>Semi-persistent</li>
+            <li>Persistent</li>
+          </ol>
+        </section>
+        <section>
+          <h2>howcanimake?</h2>
+          <ol>
+              <li>Substitute a custom $cacheFactory</li>
+              <li>Directly construct custom objects that conform to the contract</li>
+          </ol>
+        </section>
+        <section>
+            <pre><code data-trim contenteditable>
+    return {
+        info: backingCache.info(),
+        put: function(key, value) {
+            if (timeouts[key]) {
+                $interval.cancel(timeouts[key]);
+            }
+            backingCache.put(key, value);
+            var promise = $interval(function() {
+                backingCache.remove(key);
+            }, ttl);
+            timeouts[key] = promise;
+        },
+        get: backingCache.get,
+        remove: function(key) {
+            if (timeouts[key]) {
+                $interval.cancel(timeouts[key]);
+                delete timeouts[key];
+            }
+            backingCache.remove(key);
+        },
+        removeAll: function() {
+            Object.getOwnPropertyNames(timeouts).forEach(function(key) {
+                $interval.cancel(timeouts[key]);
+                delete timeouts[key];
+            });
+            backingCache.removeAll();
+        },
+        destroy: function() {
+            backingCache.destroy();
+            backingCache = null;
+        }
+    }
+            </code></pre>
+        </section>
+        <section>
+          <pre><code data-trim contenteditable>
+function($q, storage) {
+  return {
+      info: function() {
+          return {
+              id: name,
+              size: storage.length,
+              options: {}
+          }
+      },
+      put: function(key, value) {
+          $q.when(value, function(resolvedValue){
+            var data = resolvedValue['data'];
+            if (data !== undefined) {
+              storage.setItem(key, data);
+            }
+          });
+      },
+      get: function(key){
+          if (!storage.hasOwnProperty(key)) {
+            return undefined;
+          }
+          return storage.getItem(key);
+      },
+      remove: function(key) {
+          storage.removeItem(key);
+      },
+      removeAll: function() {
+          storage.clear();
+      },
+      destroy: function() {
+          this.removeAll();
+      }
+  }
+        </code></pre>
+    </section>
+        <section>
+          <h1>FIN</h1>
+        </section>
+      </div>
+    </div>
+    <script src="./assets/js/app.js"></script>
+    <!-- If the query includes 'print-pdf', use the PDF print sheet-->
+    <script type="text/javascript">
+      if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = './assets/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+      } else if ( window.location.search.match( /print-paper/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = './assets/css/print/paper.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+      }
+
+    </script>
+  </body>
+</html>
