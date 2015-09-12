@@ -13,11 +13,11 @@
   <!-- <![endif]-->
   <head>
     <meta charset="utf-8">
-    <title>Caching in Angular.js</title>
+    <title>Caching in AngularJS</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="description" content="Reveal JS Template">
+    <meta name="description" content="Caching in AngularJS">
     <link href="./assets/css/style.css" rel="stylesheet" type="text/css">
   </head>
   <body>
@@ -25,7 +25,7 @@
       <div class="opi-logo"></div>
       <div class="slides">
         <section data-state="index-slide">
-          <h1>Caching in Angular.js</h1>
+          <h1>Caching in AngularJS</h1>
           <h3>Easy data-flow control in services</h3>
           <p>
             <small><a href="http://twitter.com/plummer_mike">Mike Plummer</a>  | Senior Consultant | <a href="http://www.objectpartners.com/">Object Partners</a></small>
@@ -41,7 +41,7 @@
         <section>
           <h2>Awesomeness</h2>
           <p>
-            Angular.js supports super-easy caching of $http invocations (including things that use $http like $resource)...
+            AngularJS supports super-easy caching of $http invocations (including things that use $http like $resource)...
           </p>
           <p class="fragment">...but by default caching is not enabled.</p>
         </section>
@@ -63,8 +63,8 @@
           </ol>
         </section>
         <section>
-          <h2>Use of $cacheFactory</h2>
-          <p>Adding a default Angular-provided cache is super simple:
+          <h2>Basic Caching</h2>
+          <p>Adding a default Angular-provided cache is super simple
           <p>
               Without caching...
             <pre><code data-trim contenteditable>
@@ -93,7 +93,24 @@ $resource('./data', {}, {
     'myapp/data/beta?param=true': '{content}'
 }
           </code></pre>
-          <p class="fragment">Grows quickly if you hit many different URI's and is prone to collisions.</p>
+        </section>
+        <section>
+          <h2>Use of $cacheFactory</h2>
+          <p>$cacheFactory enables construction of named caches
+
+            <pre><code data-trim contenteditable>
+$resource('./data', {}, {
+  query: {method:'GET', cache: $cacheFactory('myCache')}
+});
+            </code></pre>
+        </section>
+        <section>
+          <h2>Cache Shortcomings</h2>
+          <ol>
+            <li class="fragment">Use of URI as cache key means potentially quick growth.</li>
+            <li class="fragment">Broad use of a cache increases the risk of collisions.</li>
+            <li class="fragment">Default cache is used by Angular internals and is difficult to manage.</li>
+          </ol>
         </section>
         <section>
           <h2>Simple Example</h2>
@@ -116,6 +133,10 @@ $resource('./data', {}, {
             <li>Semi-persistent</li>
             <li>Persistent</li>
           </ol>
+        </section>
+        <section>
+          <h2>More Examples</h2>
+          <p>Let's check out LRU, TTL, and persistent caches.</p>
         </section>
         <section>
           <h2>howcanimake?</h2>
@@ -195,10 +216,17 @@ function($q, storage) {
           this.removeAll();
       }
   }
-        </code></pre>
-    </section>
+          </code></pre>
+        </section>
         <section>
-          <h1>FIN</h1>
+          <h2>Libraries</h2>
+          <ol>
+              <li><a href="https://github.com/jmdobry/angular-cache">angular-cache</a></li>
+              <li><a href="http://www.getbreezenow.com/">breeze.js</a></li>
+          </ol>
+        </section>
+        <section>
+          <h1>Q&amp;A</h1>
         </section>
       </div>
     </div>

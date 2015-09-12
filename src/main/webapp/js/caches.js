@@ -4,26 +4,26 @@
 
 angular.module('caches', [])
   .factory('TTLCacheFactory', [
-    '$cacheFactory', '$interval',
-    function($cacheFactory, $interval){
-      
+    '$cacheFactory', '$timeout',
+    function($cacheFactory, $timeout){
+
       return {
         create: function(name, ttl) {
-        
+
             if (typeof(name) !== 'string' || typeof(ttl) !== 'number') {
                 throw "Name and TTL must be provided";
             }
             var backingCache = $cacheFactory(name);
             var timeouts = {};
-            
+
             return {
                 info: backingCache.info(),
                 put: function(key, value) {
                     if (timeouts[key]) {
-                        $interval.cancel(timeouts[key]);
+                        $timeout.cancel(timeouts[key]);
                     }
                     backingCache.put(key, value);
-                    var promise = $interval(function() {
+                    var promise = $timeout(function() {
                         backingCache.remove(key);
                     }, ttl);
                     timeouts[key] = promise;
@@ -31,14 +31,14 @@ angular.module('caches', [])
                 get: backingCache.get,
                 remove: function(key) {
                     if (timeouts[key]) {
-                        $interval.cancel(timeouts[key]);
+                        $timeout.cancel(timeouts[key]);
                         delete timeouts[key];
                     }
                     backingCache.remove(key);
                 },
                 removeAll: function() {
                     Object.getOwnPropertyNames(timeouts).forEach(function(key) {
-                        $interval.cancel(timeouts[key]);
+                        $timeout.cancel(timeouts[key]);
                         delete timeouts[key];
                     });
                     backingCache.removeAll();
@@ -61,7 +61,7 @@ angular.module('caches', [])
           if (!sessionStorage) {
             throw 'Session Storage is not supported';
           }
-        
+
           return buildStorageCache($q, sessionStorage);
         }
       }
@@ -76,13 +76,13 @@ angular.module('caches', [])
           if (!localStorage) {
             throw 'Local Storage is not supported';
           }
-        
+
           return buildStorageCache($q, localStorage);
         }
       }
     }
   ]);
-  
+
 var buildStorageCache = function($q, storage) {
     return {
     info: function() {

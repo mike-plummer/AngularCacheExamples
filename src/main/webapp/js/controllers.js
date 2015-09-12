@@ -38,4 +38,5 @@ angular.module('cacheControllers', ['cacheServices'])
     var vm = this;
     vm.dataService = LocalStorageCachedData;
     vm.cacheType = 'Local Storage Cache';
+    vm.localStorage = true;
   }]);
