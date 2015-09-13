@@ -26,7 +26,6 @@
       <div class="slides">
         <section data-state="index-slide">
           <h1>Caching in AngularJS</h1>
-          <h3>Easy data-flow control in services</h3>
           <p>
             <small><a href="http://twitter.com/plummer_mike">Mike Plummer</a>  | Senior Consultant | <a href="http://www.objectpartners.com/">Object Partners</a></small>
             <img src="./assets/img/2015-OPI-Logo-Long.png" style="background:none; border:none; box-shadow:none;"/>
@@ -41,7 +40,7 @@
         <section>
           <h2>Awesomeness</h2>
           <p>
-            AngularJS supports super-easy caching of $http invocations (including things that use $http like $resource)...
+            AngularJS supplies a super-easy caching feature for $http and anything else you can think of...
           </p>
           <p class="fragment">...but by default caching is not enabled.</p>
         </section>
@@ -50,17 +49,8 @@
             <ol>
               <li class="fragment">Conforms to the following contract: info, put, get, remove, removeAll, destroy</li>
               <li class="fragment">Angular-provided caches act as stateful in-memory maps</li>
-              <li class="fragment">Managed by $cacheFactory</li>
+              <li class="fragment">Unbounded (default) or LRU</li>
             </ol>
-        </section>
-        <section>
-          <h2>$cacheFactory</h2>
-          <p>Manages the lifecycle of caches
-          <ol>
-            <li class="fragment">Part of core Angular - no additional imports needed</li>
-            <li class="fragment">Handles construction of and access to cache instances</li>
-            <li class="fragment">Easy to use, but limited</li>
-          </ol>
         </section>
         <section>
           <h2>Basic Caching</h2>
@@ -95,6 +85,15 @@ $resource('./data', {}, {
           </code></pre>
         </section>
         <section>
+          <h2>$cacheFactory</h2>
+          <p>Manages the lifecycle of caches
+          <ol>
+            <li class="fragment">Part of core Angular - no additional imports needed</li>
+            <li class="fragment">Handles construction of and access to cache instances</li>
+            <li class="fragment">Easy to use, but limited</li>
+          </ol>
+        </section>
+        <section>
           <h2>Use of $cacheFactory</h2>
           <p>$cacheFactory enables construction of named caches
 
@@ -121,7 +120,7 @@ $resource('./data', {}, {
           <p>$cacheFactory supports building LRU caches.</p>
           <pre><code data-trim contenteditable>
 $resource('./data', {}, {
-  query: {method:'GET', cache: $cacheFactory('MyLRUCache', { capacity: 2 })}
+  query: {method:'GET', cache: $cacheFactory('myLRUCache', { capacity: 2 })}
 });
           </code></pre>
         </section>
