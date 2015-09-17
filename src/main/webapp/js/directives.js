@@ -42,7 +42,7 @@ angular.module('cacheDirectives', [])
     function(){
       return {
         restrict: 'E',
-        template: '<button class="button-small pure-button"><i class="fa fa-trash"></i> Clear Local Storage</button>',
+        template: '<md-button class="md-raised md-primary"><i class="fa fa-trash"></i> Clear Local Storage</md-button>',
         link: function(scope, element, attr) {
           element.on('click', function(event) {
             var localStorage = window.localStorage;
@@ -51,6 +51,20 @@ angular.module('cacheDirectives', [])
             }
           });
         }
+      }
+    }
+  ])
+  .directive('pollCard', [
+    function(){
+      return {
+        scope: {
+            number: '=',
+            type: '=',
+            data: '=',
+            count: '='
+        },
+        restrict: 'E',
+        templateUrl: 'partials/pollCard.html'
       }
     }
   ]);

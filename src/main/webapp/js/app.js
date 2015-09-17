@@ -3,6 +3,7 @@
 /* App Module */
 
 var cacheApp = angular.module('cacheApp', [
+  'ngMaterial',
   'ui.router',
   'caches',
   'cacheServices',
@@ -12,8 +13,8 @@ var cacheApp = angular.module('cacheApp', [
   'cacheControllers'
 ]);
 
-cacheApp.config(['$httpProvider', '$stateProvider', '$urlRouterProvider',
-  function($httpProvider, $stateProvider, $urlRouterProvider) {
+cacheApp.config(['$httpProvider', '$stateProvider', '$urlRouterProvider', '$mdThemingProvider',
+  function($httpProvider, $stateProvider, $urlRouterProvider, $mdThemingProvider) {
     
   /*
    * Setup Angular UI Router
@@ -60,6 +61,14 @@ cacheApp.config(['$httpProvider', '$stateProvider', '$urlRouterProvider',
      * End UI Router configuration.
      */
     
-    //Add a simple interceptor just for convenience during development - this has no functional purpose.
+    // Add a simple interceptor just for convenience during development - this has no functional purpose.
     $httpProvider.interceptors.push('serviceCallInterceptor');
+    
+    // Theming
+    $mdThemingProvider.theme('myTheme', 'default')
+        .primaryPalette('blue')
+        .accentPalette('light-blue')
+        .warnPalette('red')
+        .backgroundPalette('grey');
+    $mdThemingProvider.setDefaultTheme('myTheme');
   }]);

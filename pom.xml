@@ -47,14 +47,14 @@
             <version>0.2.15</version>
         </dependency>
         <dependency>
-            <groupId>org.webjars.npm</groupId>
-            <artifactId>purecss</artifactId>
-            <version>0.6.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>font-awesome</artifactId>
             <version>4.3.0-3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>angular-material</artifactId>
+            <version>0.11.0</version>
         </dependency>
     </dependencies>
 

@@ -1,28 +1,10 @@
-<div class="pure-g" service-poll>
-   <div class="l-box pure-u-1 pure-u-md-1-4 pure-u-lg-1-4">
-      <h3>Service #1</h3>
-      <p>Polling using {{DataCtrl.cacheType}}.</p>
-      <p>{{data1}}</p>
-      <p>Polls: {{pollCount1}}</p>
-   </div>
-   <div class="l-box pure-u-1 pure-u-md-1-4 pure-u-lg-1-4">
-      <h3>Service #2</h3>
-      <p>Polling using {{DataCtrl.cacheType}}.</p>
-      <p>{{data2}}</p>
-      <p>Polls: {{pollCount2}}</p>
-   </div>
-   <div class="l-box pure-u-1 pure-u-md-1-4 pure-u-lg-1-4">
-      <h3>Service #3</h3>
-      <p>Polling using {{DataCtrl.cacheType}}.</p>
-      <p>{{data3}}</p>
-      <p>Polls: {{pollCount3}}</p>
-   </div>
-   <div class="l-box pure-u-1 pure-u-md-1-4 pure-u-lg-1-4">
-      <h3>Service #4</h3>
-      <p>Polling using {{DataCtrl.cacheType}}.</p>
-      <p>{{data4}}</p>
-      <p>Polls: {{pollCount4}}</p>
-   </div>
-</div>
+<div layout="column" layout-margin>
+    <div layout="row" class="page-container" service-poll>
+        <poll-card number="1" type="DataCtrl.cacheType" data="data1" count="pollCount1"></poll-card>
+        <poll-card number="2" type="DataCtrl.cacheType" data="data2" count="pollCount2"></poll-card>
+        <poll-card number="3" type="DataCtrl.cacheType" data="data3" count="pollCount3"></poll-card>
+        <poll-card number="4" type="DataCtrl.cacheType" data="data4" count="pollCount4"></poll-card>
+    </div>
 
-<clear-local-storage ng-show="{{DataCtrl.localStorage}}"></clear-local-storage>
+    <clear-local-storage ng-show="{{DataCtrl.localStorage}}"></clear-local-storage>
+</div>

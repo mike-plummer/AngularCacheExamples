@@ -105,11 +105,14 @@ $resource('./data', {}, {
         </section>
         <section>
           <h2>Cache Shortcomings</h2>
-          <ol>
-            <li class="fragment">Use of URI as cache key means potentially quick growth.</li>
+          <ol class = "fragment">
+            <li>Use of URI as cache key means potentially quick growth.</li>
             <li class="fragment">Broad use of a cache increases the risk of collisions.</li>
             <li class="fragment">Default cache is used by Angular internals and is difficult to manage.</li>
           </ol>
+          <p class="fragment>
+            Do not indefinitely cache data that can change, do not ever cache data that cannot be shown stale.
+          </p>
         </section>
         <section>
           <h2>Simple Example</h2>
