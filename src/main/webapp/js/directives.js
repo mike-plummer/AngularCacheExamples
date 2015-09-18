@@ -61,7 +61,8 @@ angular.module('cacheDirectives', [])
             number: '=',
             type: '=',
             data: '=',
-            count: '='
+            count: '=',
+            quick: '='
         },
         restrict: 'E',
         templateUrl: 'partials/pollCard.html'
