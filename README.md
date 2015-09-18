@@ -2,10 +2,10 @@
 Examples of caches in AngularJS including alternative cache implementations.
 
 ## Caching in Angular
-By default, AngularJS does not cache the results of service calls. Often this is the desired behavior but once applications begin scaling or increasing in complexity this behavior can begin to bog things down. To help alleviate this bottleneck Angular provides $cacheFactory which is a simple in-memory cache implementation that can be applied to any $http or $resource request. $cacheFactory allows simple and LRU caches to be created and destroyed on-demand, giving the developer a level of control over resource caching.
+By default, AngularJS does not cache the results of service calls. Often this is the desired behavior but once applications begin scaling or increasing in complexity this behavior can begin to bog things down. To help alleviate this bottleneck Angular provides $cacheFactory which is a simple in-memory cache capability that can be applied to any $http or $resource request. $cacheFactory allows simple and LRU caches to be created and destroyed on-demand, giving the developer a level of control over resource caching.
 
 ## Alternatives
-There are many alternative cache implementations that have been developed over the past few years that offer far superior caching support. Google can tell you all about them.
+There are many alternative cache implementations that have been developed over the past few years that offer far superior caching support. The standout example is [angular-cache](https://github.com/jmdobry/angular-cache). Google can tell you all about it and many others.
 
 ## Examples
 This application is a trivial example of how caches can be introduced into your application and implements a few alternative caches to show how they can be created.
@@ -17,7 +17,7 @@ The first response for each service URL is cached and used for the remainder of 
 ### LRU Cache
 The cache is created with a fixed size. Once capacity is reached the least-recently-used item is evicted from the cache to make room. Future calls to the URL that was evicted will hit the server and be placed back into the cache, potentially evicting a less-recently-used item.
 ### TTL Cache
-The cache is created with no fixed size but each entry in the cache is only allowed to reside for a fixed amount of time. Calls to a URL will hit the cache during the TTL but will then hit the server once the cache entry is evicted. A call to the server will result in entries being re-added to the cache with a refreshed TTL.
+The cache is created with no fixed size but each entry in the cache is only allowed to reside for a fixed amount of time. Calls to a URL will hit the cache during the TTL but will then hit the server once the cache entry is evicted. A call to the server will result in entries being re-added to the cache with a refreshed TTL. Note that this is very much not a production-capable implementation as it is extremely inefficient (use of $interval for each entry rather than a single $interval reaper).
 ### Session Storage
 The cache leverages browser-provided Session Storage to supply a Standard Cache. This allows cache entries to persist for the duration of the client's session meaning they are durable across browser refreshes. If the user closes the browser or their session expires the cache will be invalidated.
 ### Local Storage
