@@ -1,9 +1,9 @@
 <div layout="column">
     <div layout="row" class="page-container" service-poll>
-        <poll-card number="1" type="DataCtrl.cacheType" data="data1" count="pollCount1" quick="true"></poll-card>
-        <poll-card number="2" type="DataCtrl.cacheType" data="data2" count="pollCount2" quick="true"></poll-card>
-        <poll-card number="3" type="DataCtrl.cacheType" data="data3" count="pollCount3" quick="false"></poll-card>
-        <poll-card number="4" type="DataCtrl.cacheType" data="data4" count="pollCount4" quick="false"></poll-card>
+        <poll-card number="1" type="DataCtrl.cacheType" data="data1" count="pollCount1" quick="true" flex="25"></poll-card>
+        <poll-card number="2" type="DataCtrl.cacheType" data="data2" count="pollCount2" quick="true" flex="25"></poll-card>
+        <poll-card number="3" type="DataCtrl.cacheType" data="data3" count="pollCount3" quick="false" flex="25"></poll-card>
+        <poll-card number="4" type="DataCtrl.cacheType" data="data4" count="pollCount4" quick="false" flex="25"></poll-card>
     </div>
 
     <clear-local-storage ng-show="{{DataCtrl.localStorage}}"></clear-local-storage>

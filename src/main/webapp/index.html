@@ -26,28 +26,28 @@
     <script src="js/services.js"></script>
 </head>
 <body>
-    <md-content>
+    <md-content layout="column" layout-fill>
         <md-toolbar class="md-menu-toolbar md-primary">
-            <md-toolbar class="md-primary">
+            <md-toolbar class="md-primary md-hue-2 toolbar">
                 <h3 class="toolbarText">Cache Types</h3>
             </md-toolbar>
             <div layout="row">
                 <div>
                     <md-menu-bar>
-                        <button ui-sref="nocache">None</button>
-                        <button ui-sref="cache">Default</button>
-                        <button ui-sref="lru">LRU</button>
-                        <button ui-sref="ttl">TTL</button>
-                        <button ui-sref="sessionstorage">Session Storage</button>
-                        <button ui-sref="localstorage">Local Storage</button>
+                        <md-button ui-sref="nocache">None</md-button>
+                        <md-button ui-sref="cache">Default</md-button>
+                        <md-button ui-sref="lru">LRU</md-button>
+                        <md-button ui-sref="ttl">TTL</md-button>
+                        <md-button ui-sref="sessionstorage">Session Storage</md-button>
+                        <md-button ui-sref="localstorage">Local Storage</md-button>
                     <md-menu-bar>
                 </div>
             </div>
         </md-toolbar>
-        <md-divider></md-divider>
+        <md-divider layout-padding></md-divider>
         <div ui-view></div>
 
-        <div ng-view></div>
+        <div ng-view flex></div>
     </md-content>
 </body>
 </html>

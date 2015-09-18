@@ -1,12 +1,10 @@
-<md-card>
-    <md-toolbar class="md-primary md-hue-2">
-        <h4 class="toolbarText">Service #{{number}}</h4>
-        
-        <div class="load-bar">
-            <div class="bar" ng-class="{'quick-bar':quick,'slow-bar':!quick}"></div>
-        </div>
+<md-card class="md-whiteframe-z4">
+    <md-toolbar class="md-primary md-hue-2 toolbar">
+        <h5 class="toolbarText">Service #{{number}}</h4>
     </md-toolbar>
-
+    <div class="load-bar">
+        <div class="bar" ng-class="{'quick-bar':quick,'slow-bar':!quick}"></div>
+    </div>
     <md-card-content>
         <p>Polling using {{type}}.</p>
         <p>{{data}}</p>
