@@ -16,7 +16,7 @@ angular.module('cacheDirectives', [])
             scope.data2 = service.query({version: 2});
             (scope.pollCount2) ? scope.pollCount2++ : scope.pollCount2 = 1;
         };
-        
+
         var slowRefresh = function() {
             var service = scope.DataCtrl.dataService;
             scope.data3 = service.query({version: 3});
@@ -27,7 +27,7 @@ angular.module('cacheDirectives', [])
         };
         fastRefresh();
         slowRefresh();
-        
+
         var promise1 = $interval(fastRefresh, 1000);
         var promise2 = $interval(slowRefresh, 4000);
 
@@ -54,8 +54,8 @@ angular.module('cacheDirectives', [])
       }
     }
   ])
-  .directive('pollCard', [
-    function(){
+  .directive('pollCard', ['$timeout',
+    function($timeout){
       return {
         scope: {
             number: '=',
@@ -65,7 +65,19 @@ angular.module('cacheDirectives', [])
             quick: '='
         },
         restrict: 'E',
-        templateUrl: 'partials/pollCard.html'
+        templateUrl: 'partials/pollCard.html',
+        link: function(scope, element, attrs) {
+            scope.$watch('data', function(nv,ov) {
+               if (!angular.equals(ov, nv)) {
+                 element.addClass('changed');
+                 element.addClass('fade')
+                 $timeout(function() {
+                   element.removeClass('changed');
+                   element.addClass('fade');
+                 }, 300);
+               }
+             });
+        }
       }
     }
   ]);

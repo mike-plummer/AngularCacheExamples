@@ -5,6 +5,14 @@ html {
 .rounded {
     border-radius: 4px;
 }
+.changed md-card-content {
+    color: red;
+    opacity: 0.5;
+}
+
+.fade md-card-content {
+    transition:0.2s linear all;
+}
 
 .toolbar {
     min-height: 0px;
