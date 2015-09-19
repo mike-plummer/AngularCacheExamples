@@ -106,26 +106,32 @@ $resource('./data', {}, {
         <section>
           <h2>Cache Shortcomings</h2>
           <ol class = "fragment">
-            <li>Use of URI as cache key means potentially quick growth.</li>
+            <li>Use of URI as cache key causes quick growth.</li>
             <li class="fragment">Broad use of a cache increases the risk of collisions.</li>
-            <li class="fragment">Default cache is used by Angular internals and is difficult to manage.</li>
+            <li class="fragment">Large caches become difficult to manage.</li>
           </ol>
-          <p class="fragment>
-            Do not indefinitely cache data that can change, do not ever cache data that cannot be shown stale.
+          <p></p>
+          <div class="fragment">
+            <p>
+              ! Do not indefinitely cache data that can change.
+            </p>
+            <p>
+              ! Do not ever cache data that cannot be shown stale.
+            </p>
           </p>
         </section>
         <section>
-          <h2>Simple Example</h2>
-          <p>Let's see the difference from uncached and default-cached services.</p>
-        </section>
-        <section>
-          <h2>More advanced caching</h2>
+          <h2>LRU Caches</h2>
           <p>$cacheFactory supports building LRU caches.</p>
           <pre><code data-trim contenteditable>
 $resource('./data', {}, {
   query: {method:'GET', cache: $cacheFactory('myLRUCache', { capacity: 2 })}
 });
           </code></pre>
+        </section>
+        <section>
+          <h2>Examples</h2>
+          <p>Let's see the difference from uncached and default-cached services.</p>
         </section>
         <section>
           <h2>Custom Caches</h2>
@@ -146,79 +152,6 @@ $resource('./data', {}, {
               <li>Substitute a custom $cacheFactory</li>
               <li>Directly construct custom objects that conform to the contract</li>
           </ol>
-        </section>
-        <section>
-            <pre><code data-trim contenteditable>
-    return {
-        info: backingCache.info(),
-        put: function(key, value) {
-            if (timeouts[key]) {
-                $interval.cancel(timeouts[key]);
-            }
-            backingCache.put(key, value);
-            var promise = $interval(function() {
-                backingCache.remove(key);
-            }, ttl);
-            timeouts[key] = promise;
-        },
-        get: backingCache.get,
-        remove: function(key) {
-            if (timeouts[key]) {
-                $interval.cancel(timeouts[key]);
-                delete timeouts[key];
-            }
-            backingCache.remove(key);
-        },
-        removeAll: function() {
-            Object.getOwnPropertyNames(timeouts).forEach(function(key) {
-                $interval.cancel(timeouts[key]);
-                delete timeouts[key];
-            });
-            backingCache.removeAll();
-        },
-        destroy: function() {
-            backingCache.destroy();
-            backingCache = null;
-        }
-    }
-            </code></pre>
-        </section>
-        <section>
-          <pre><code data-trim contenteditable>
-function($q, storage) {
-  return {
-      info: function() {
-          return {
-              id: name,
-              size: storage.length,
-              options: {}
-          }
-      },
-      put: function(key, value) {
-          $q.when(value, function(resolvedValue){
-            var data = resolvedValue['data'];
-            if (data !== undefined) {
-              storage.setItem(key, data);
-            }
-          });
-      },
-      get: function(key){
-          if (!storage.hasOwnProperty(key)) {
-            return undefined;
-          }
-          return storage.getItem(key);
-      },
-      remove: function(key) {
-          storage.removeItem(key);
-      },
-      removeAll: function() {
-          storage.clear();
-      },
-      destroy: function() {
-          this.removeAll();
-      }
-  }
-          </code></pre>
         </section>
         <section>
           <h2>Libraries</h2>
