@@ -104,23 +104,6 @@ $resource('./data', {}, {
             </code></pre>
         </section>
         <section>
-          <h2>Cache Shortcomings</h2>
-          <ol class = "fragment">
-            <li>Use of URI as cache key causes quick growth.</li>
-            <li class="fragment">Broad use of a cache increases the risk of collisions.</li>
-            <li class="fragment">Large caches become difficult to manage.</li>
-          </ol>
-          <p></p>
-          <div class="fragment">
-            <p>
-              ! Do not indefinitely cache data that can change.
-            </p>
-            <p>
-              ! Do not ever cache data that cannot be shown stale.
-            </p>
-          </p>
-        </section>
-        <section>
           <h2>LRU Caches</h2>
           <p>$cacheFactory supports building LRU caches.</p>
           <pre><code data-trim contenteditable>
@@ -152,6 +135,23 @@ $resource('./data', {}, {
               <li>Substitute a custom $cacheFactory</li>
               <li>Directly construct custom objects that conform to the contract</li>
           </ol>
+        </section>
+        <section>
+          <h2>Cache Shortcomings</h2>
+          <ol class = "fragment">
+            <li>Use of URI as cache key causes quick growth.</li>
+            <li class="fragment">Broad use of a cache increases the risk of collisions.</li>
+            <li class="fragment">Large caches become difficult to manage.</li>
+          </ol>
+          <p></p>
+          <div class="fragment">
+            <p>
+              ! Do not indefinitely cache data that can change.
+            </p>
+            <p>
+              ! Do not ever cache data that cannot be shown stale.
+            </p>
+          </p>
         </section>
         <section>
           <h2>Libraries</h2>
